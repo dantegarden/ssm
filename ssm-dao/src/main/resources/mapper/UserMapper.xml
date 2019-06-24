@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间 -->
+<mapper namespace="com.letinvr.dao.mapper.UserMapper">
+
+    <select id="findById" parameterType="int" resultType="SysUser">
+		select * from sys_user where id = #{id}
+	</select>
+
+    <select id="findUsers" resultType="SysUser">
+		select * from sys_user
+	</select>
+</mapper>
