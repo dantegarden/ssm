@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-5.1.xsd
-    http://www.springframework.org/schema/util
-    http://www.springframework.org/schema/util/spring-util-5.1.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <util:properties id="jdbcConfig" location="classpath:application.properties"></util:properties>
-
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-        <property name="driverClassName" value="#{jdbcConfig.db.driverClassName}"></property>
-        <property name="jdbcUrl" value="#{jdbcConfig.db.url}"></property>
-        <property name="username" value="#{jdbcConfig.db.username}"></property>
-        <property name="password" value="#{jdbcConfig.db.password}"></property>
+    <!--数据源-->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
         <!-- 连接只读数据库时配置为true， 保证安全 -->
         <property name="readOnly" value="false"/>
         <!-- 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒 -->
@@ -26,19 +23,37 @@
         <property name="maximumPoolSize" value="15"/>
     </bean>
 
-
+    <!--mybatis核心配置-->
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- configLocation 和 configuration 不可同时配置
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>-->
         <property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"/>
         <property name="typeAliasesPackage" value="com.letinvr.dao.model"/>
-    </bean>
-
-    <!-- mybatis文件配置，扫描所有mapper文件 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
-        <property name="dataSource" ref="dataSource"/>
+        <property name="configuration">
+            <bean class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+                <!--开启下划线驼峰映射-->
+                <property name="mapUnderscoreToCamelCase" value="true"/>
+                <!--关闭缓存-->
+                <property name="cacheEnabled" value="false" />
+            </bean>
+        </property>
+        <property name="globalConfig">
+            <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+                <property name="dbConfig">
+                    <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                        <!--主键规则 主键自增-->
+                        <property name="idType" value="AUTO"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="plugins">
+            <list>
+                <!-- 注册分页插件 -->
+                <bean class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor" />
+            </list>
+        </property>
     </bean>
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
@@ -48,8 +63,12 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
-    <!-- 对数据源进行事务管理 -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="dataSource"/>
+    <!-- 事务管理器 -->
+    <bean id="dataSourceTransactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 开启注解@Tranctional -->
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
 </beans>

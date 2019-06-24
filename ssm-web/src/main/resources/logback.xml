@@ -12,12 +12,12 @@
     <jmxConfigurator/>
 
     <!-- 定义日志文件 输出位置 -->
-    <property name="log.home_dir" value="${project.basedir}/"/>
+    <property name="log.home_dir" value="${project.basedir}/logs/"/>
 
     <!-- 日志最大的历史 30天 -->
     <property name="log.maxHistory" value="30"/>
 
-    <property name="log.level" value="debug"/>
+    <property name="log.level" value="info"/>
 
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
