@@ -6,10 +6,7 @@ import com.letinvr.service.dict.DictService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/dict")
@@ -20,7 +17,7 @@ public class DictController {
     @Autowired
     private DictService dictService;
 
-    @GetMapping("/list")
+    @RequestMapping("/list")
     public Result listPage(@RequestParam Integer page, @RequestParam Integer size){
         PageData pageData = dictService.fetchDictList(page, size);
         return Result.ok(pageData);

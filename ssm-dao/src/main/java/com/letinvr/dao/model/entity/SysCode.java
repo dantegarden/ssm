@@ -1,5 +1,6 @@
 package com.letinvr.dao.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -11,6 +12,10 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class SysCode implements Serializable {
+
+    private static final long serialVersionUID = 2L;
+
+    @TableId
     private Long id;
     private String codeKey;
     private String codeName;

@@ -1,5 +1,6 @@
 package com.letinvr.web.controller;
 
+import com.letinvr.common.bean.Result;
 import com.letinvr.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,8 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/test")
-    public ResponseEntity test(){
+    public Result test(){
 
-        return ResponseEntity.ok(userService.findAll());
+        return Result.ok(userService.findAll());
     }
 }

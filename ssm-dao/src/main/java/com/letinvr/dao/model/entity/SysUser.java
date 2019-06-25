@@ -13,6 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class SysUser implements Serializable {
 
+    private static final long serialVersionUID = 2L;
+
     @TableId
     private Long id;
     private String username;
