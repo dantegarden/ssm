@@ -36,6 +36,7 @@
                 <property name="mapUnderscoreToCamelCase" value="true"/>
                 <!--关闭缓存-->
                 <property name="cacheEnabled" value="false" />
+
             </bean>
         </property>
         <property name="globalConfig">

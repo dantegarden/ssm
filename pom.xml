@@ -30,6 +30,8 @@
         <commons-lang3.version>3.1</commons-lang3.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
         <fastjson.version>1.2.47</fastjson.version>
         <guava.version>18.0</guava.version>
         <lombok.version>1.18.4</lombok.version>
@@ -174,6 +176,14 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <!-- servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- common jars -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -190,6 +200,7 @@
             <artifactId>commons-fileupload</artifactId>
             <version>${commons-fileupload.version}</version>
         </dependency>
+
 
         <!-- tools -->
         <dependency>

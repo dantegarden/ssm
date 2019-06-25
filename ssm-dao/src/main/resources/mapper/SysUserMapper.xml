@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 命名空间 -->
-<mapper namespace="com.letinvr.dao.mapper.UserMapper">
+<mapper namespace="com.letinvr.dao.mapper.SysUserMapper">
 
     <select id="findById" parameterType="int" resultType="SysUser">
 		select * from sys_user where id = #{id}

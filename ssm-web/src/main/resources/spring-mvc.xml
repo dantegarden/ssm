@@ -39,4 +39,14 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!-- 解决API接口跨域问题配置 -->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="*"
+                     allowed-headers="*"
+                     allow-credentials="true"
+                     exposed-headers="Set-Cookie,Content-Disposition"
+                     max-age="3600" />
+    </mvc:cors>
 </beans>
