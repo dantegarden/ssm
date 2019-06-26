@@ -1,15 +1,25 @@
 package com.letinvr.common.util;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class CommonHelper {
+
+    public static final Logger logger = LoggerFactory.getLogger(CommonHelper.class);
 
     public static final char UNDERLINE = '_';
 
@@ -40,27 +50,69 @@ public class CommonHelper {
     }
 
     /**
-     * map 转 java bean
+     * 使用Introspector，map集合成javabean
      *
-     * @return
+     * @param map       map
+     * @param beanClass bean的Class类
+     * @return bean对象
      */
-    public static <T> T map2JavaBean(Map<String, T> map, Class<T> beanClass) throws Exception {
-        if (map == null)
+    public static <T> T mapToBean(Map<String, Object> map, Class<T> beanClass) {
+
+        if (MapUtils.isEmpty(map)) {
             return null;
-        T obj = beanClass.newInstance();
-        org.apache.commons.beanutils.BeanUtils.populate(obj, map);
-        return obj;
+        }
+
+        try {
+            T t = beanClass.newInstance();
+
+            BeanInfo beanInfo = Introspector.getBeanInfo(t.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                Method setter = property.getWriteMethod();
+                if (setter != null) {
+                    setter.invoke(t, map.get(property.getName()));
+                }
+            }
+            return t;
+        } catch (Exception ex) {
+            logger.error("map集合转javabean出错，错误信息，{}", ex.getMessage());
+            throw new RuntimeException();
+        }
+
     }
 
     /**
-     * java bean 转 map
+     * 使用Introspector，对象转换为map集合
      *
-     * @return
+     * @param beanObj javabean对象
+     * @return map集合
      */
-    public static <String, T> Map<String, T> javaBean2Map(Object obj) {
-        if(obj == null)
+    public static Map<String, Object> beanToMap(Object beanObj) {
+
+        if (null == beanObj) {
             return null;
-        return (Map<String, T>) new org.apache.commons.beanutils.BeanMap(obj);
+        }
+
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(beanObj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                String key = property.getName();
+                if (key.compareToIgnoreCase("class") == 0) {
+                    continue;
+                }
+                Method getter = property.getReadMethod();
+                Object value = getter != null ? getter.invoke(beanObj) : null;
+                map.put(key, value);
+            }
+
+            return map;
+        } catch (Exception ex) {
+            logger.error("javabean集合转map出错，错误信息，{}", ex.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**

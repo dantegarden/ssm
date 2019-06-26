@@ -26,9 +26,10 @@ public class DictServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> impleme
     @Override
     public PageData fetchDictList(DataMsg dataMsg){
         Page<SysCode> page = new Page<>(dataMsg.getPage(), dataMsg.getSize());
-        Map<String, Object> condition = dataMsg.getQueryCondition();
+        Map<String, Object> condition = (Map)dataMsg.getQueryCondition();
         QueryWrapper<SysCode> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty((String)condition.get("codeType")), "code_type", condition.get("codeType"));
+        queryWrapper.orderBy(StringUtils.isNotEmpty(dataMsg.getOrder()), dataMsg.getIsAsc(), dataMsg.getOrder());
         IPage<SysCode> codePage = codeMapper.selectPage(page, queryWrapper);
         return new PageData(codePage);
     }

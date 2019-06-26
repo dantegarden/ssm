@@ -30,6 +30,6 @@ public class SysCode implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 }
