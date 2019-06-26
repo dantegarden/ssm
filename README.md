@@ -13,7 +13,7 @@
 - 模板框架：velocity（用于代码生成）
 - 日志框架：slf4j + logback
 - 开发工具：lombok
-- 前端框架：vue3
+- 前端框架：vue2.5
 - UI库：Element-UI
 - 异步通信: axios
 

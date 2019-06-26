@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.letinvr.common.bean.Result;
 import com.letinvr.dao.model.dto.UserInfoDto;
 import com.letinvr.web.vo.UserLoginVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/token")
     public Result token(@ModelAttribute UserLoginVo vo){

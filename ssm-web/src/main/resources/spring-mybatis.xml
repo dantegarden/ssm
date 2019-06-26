@@ -47,6 +47,8 @@
                         <property name="idType" value="AUTO"/>
                     </bean>
                 </property>
+                <!--自定义公共字段填充处理器-->
+                <property name="metaObjectHandler" ref="metaObjectHandler" />
             </bean>
         </property>
         <property name="plugins">
@@ -72,4 +74,6 @@
     <!-- 开启注解@Tranctional -->
     <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
 
+    <!--自定义公共字段处理器-->
+    <bean id="metaObjectHandler" class="com.letinvr.dao.handler.MyMetaObjectHandler" />
 </beans>
