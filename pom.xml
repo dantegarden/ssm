@@ -14,6 +14,7 @@
         <module>ssm-dao</module>
         <module>ssm-service</module>
         <module>ssm-web</module>
+        <module>ssm-autocode</module>
     </modules>
 
     <name>ssm</name>
