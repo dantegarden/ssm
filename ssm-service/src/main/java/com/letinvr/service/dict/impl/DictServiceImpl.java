@@ -29,6 +29,7 @@ public class DictServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> impleme
         Map<String, Object> condition = (Map)dataMsg.getQueryCondition();
         QueryWrapper<SysCode> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty((String)condition.get("codeType")), "code_type", condition.get("codeType"));
+        queryWrapper.like(StringUtils.isNotEmpty((String)condition.get("codeName")), "code_name", condition.get("codeName"));
         queryWrapper.orderBy(StringUtils.isNotEmpty(dataMsg.getOrder()), dataMsg.getIsAsc(), dataMsg.getOrder());
         IPage<SysCode> codePage = codeMapper.selectPage(page, queryWrapper);
         return new PageData(codePage);
