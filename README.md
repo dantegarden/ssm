@@ -23,7 +23,6 @@
 - ssm-dao：数据持久模块
 - ssm-service：服务层模块
 - ssm-web：控制层模块
-- ssm-autocode：代码生成器
 
 
 ### 软件环境
